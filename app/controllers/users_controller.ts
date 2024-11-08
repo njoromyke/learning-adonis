@@ -16,4 +16,11 @@ export default class UsersController {
   index() {
     return this.userService.index(this.ctx.params.id)
   }
+
+  create() {
+    // email, fullName
+    const { email, fullName } = this.ctx.request.all()
+
+    return this.userService.create({ email, fullName })
+  }
 }
