@@ -26,6 +26,8 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
+  declare static avatar: string
+
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 

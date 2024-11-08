@@ -9,6 +9,8 @@
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+import { normalize, sep } from 'path'
+import app from '@adonisjs/core/services/app'
 
 const HomeController = () => import('#controllers/home_controller')
 const UsersController = () => import('#controllers/users_controller')
@@ -45,3 +47,18 @@ router.get('/', async () => {
 })
 
 router.resource('posts', PostsController)
+
+const PATH_TRAVERSAL_REGEX = /(?:^|[\\/])\.\.(?:[\\/]|$)/
+
+router.get('/uploads/*', async ({ request, response }) => {
+  const filePath = request.param('*').join(sep)
+  const normalizedPath = normalize(filePath)
+
+  if (PATH_TRAVERSAL_REGEX.test(normalizedPath)) {
+    return response.badRequest('Malfomed path')
+  }
+
+  const absolutePath = app.makePath('uploads', normalizedPath)
+
+  return response.download(absolutePath)
+})
