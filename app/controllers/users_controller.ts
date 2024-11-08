@@ -1,17 +1,19 @@
+import UserService from '#services/user_service'
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 
 @inject()
-export default class UserService {
-  constructor(private ctx: HttpContext) {}
+export default class UsersController {
+  constructor(
+    private ctx: HttpContext,
+    private userService: UserService
+  ) {}
 
   all() {
-    console.log(this.ctx.auth.user)
-    // return users from db
+    return this.userService.all()
   }
 
   index() {
-    console.log('I am a middleware')
-    return 'Hello world'
+    return this.userService.index(this.ctx.params.id)
   }
 }

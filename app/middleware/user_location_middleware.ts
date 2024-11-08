@@ -12,8 +12,6 @@ export default class UserLocationMiddleware {
   async handle(ctx: HttpContext, next: NextFn) {
     const ip = ctx.request.ip()
 
-    console.log(await this.geoIpService.lookup(ip))
-
     const output = await next()
     return output
   }

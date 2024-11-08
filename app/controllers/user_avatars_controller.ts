@@ -7,7 +7,12 @@ export default class UserAvatarsController {
   /**
    * Display a list of resource
    */
-  async index({}: HttpContext) {}
+  async index({ request }: HttpContext) {
+    const payload = request.all()
+    console.log(payload)
+
+    return 'Hello'
+  }
 
   /**
    * Display form to create a new record
