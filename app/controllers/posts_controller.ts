@@ -1,3 +1,4 @@
+import { createPostValidator, updatePostValidator } from '#validators/post'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class PostsController {
@@ -26,7 +27,13 @@ export default class PostsController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request }: HttpContext) {}
+  async store({ request }: HttpContext) {
+    const data = request.all()
+
+    const payload = await createPostValidator.validate(data)
+
+    return payload
+  }
 
   /**
    * Show individual record
@@ -42,7 +49,12 @@ export default class PostsController {
    * Handle form submission for the edit action
    */
   async update({ params, request }: HttpContext) {
-    console.log(params)
+    const data = request.all()
+
+    // const payload = await updatePostValidator.validate(data)
+    const payload = request.validateUsing(updatePostValidator)
+
+    return payload
   }
 
   /**
